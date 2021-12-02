@@ -9,6 +9,7 @@ import requests
 requests.packages.urllib3.disable_warnings()
 # import urllib3
 # urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+from pylatexenc.latex2text import LatexNodes2Text
 
 
 """ Scrape arXiv for astro-ph papers that were submitted within the past N days.
@@ -37,7 +38,7 @@ def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_au
     cols = ('created', 'id', 'title', 'categories', 'abstract', 'authors')
     df = pd.DataFrame(output, columns=cols)
     new = df[df['created'] >= d0]
-    text = ''
+    latex = ''
     npaper = 0
     for row in new.itertuples(index=False):
         adopted = False
@@ -48,10 +49,14 @@ def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_au
                 npaper += 1
         if adopted:
             mytext = 'Title: ' + row.title + '.\n Submitted by ' + row.authors[0] + ' et al.\n ' + row.abstract + '\n\n'
-            text += mytext
+            latex += mytext
         # if npaper >= 1:
             # break
     print(npaper)
+    # print(latex)
+    text = LatexNodes2Text().latex_to_text(latex)
+    # print(text)
+    # quit()
     if txtout:
         print("exporting script to txt file")
         with open(txtout, 'w') as f:
