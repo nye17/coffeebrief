@@ -12,6 +12,14 @@ from mutagen.mp3 import MP3
 
 
 """ Scrape arXiv for astro-ph papers that were submitted within the past N days.
+
+Todo:
+    1. Change all occurrences of underscore to 'sub'.
+    2. Find and correct common astronomy terms: SNIa -> 'Supernova One A', 'WMAP' -> 'W map', 'H_0' -> 'H knot', 'QSO' -> 'quasar', etc.
+    3. Set up white and black-lists, e.g., no conference proceedings, no papers with 'Finding Nemo' in the title, etc.
+    4. Correct extended pauses in the middle of some sentences.
+    5. Speed up by building a local TTS library?
+    6. Allow scraping of the OSU dailybrew list instead of astro-ph.
 """
 
 def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_audio.mp3', cats=['ga', 'co', 'sr', 'ep']):
