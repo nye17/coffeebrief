@@ -49,8 +49,8 @@ def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_au
         if adopted:
             mytext = 'Title: ' + row.title + '.\n Submitted by ' + row.authors[0] + ' et al.\n ' + row.abstract + '\n\n'
             text += mytext
-        if npaper >= 1:
-            break
+        # if npaper >= 1:
+            # break
     print(npaper)
     if txtout:
         print("exporting script to txt file")
