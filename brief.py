@@ -53,10 +53,7 @@ def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_au
         # if npaper >= 1:
             # break
     print(npaper)
-    # print(latex)
     text = LatexNodes2Text().latex_to_text(latex)
-    # print(text)
-    # quit()
     if txtout:
         print("exporting script to txt file")
         with open(txtout, 'w') as f:
@@ -65,7 +62,6 @@ def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_au
         print("exporting audio to mp3 file")
         myobj = gTTS(text=text, lang=language, slow=False)
         myobj.save(mp3out)
-        # os.system("afplay astroph.mp3")
     return()
 
 if __name__ == "__main__":
