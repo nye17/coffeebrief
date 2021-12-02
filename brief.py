@@ -7,9 +7,8 @@ import os, sys
 import datetime
 import requests
 requests.packages.urllib3.disable_warnings()
-# import urllib3
-# urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from pylatexenc.latex2text import LatexNodes2Text
+from mutagen.mp3 import MP3
 
 
 """ Scrape arXiv for astro-ph papers that were submitted within the past N days.
@@ -52,22 +51,31 @@ def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_au
             latex += mytext
         # if npaper >= 1:
             # break
-    print(npaper)
+    print(str(npaper) + " abstracts found.")
     text = LatexNodes2Text().latex_to_text(latex)
     if txtout:
-        print("exporting script to txt file")
+        print("Exporting script to txt file")
         with open(txtout, 'w') as f:
             f.write(text)
     if mp3out:
-        print("exporting audio to mp3 file")
+        print("Exporting audio to mp3 file")
         myobj = gTTS(text=text, lang=language, slow=False)
         myobj.save(mp3out)
+        audio = MP3(mp3out)
+        length = int(audio.info.length / 60.0) # mins
+        print("Duration of the astro-ph podcast: " + str(length) + " minutes")
     return()
 
 if __name__ == "__main__":
     try:
-        n = int(sys.argv[1])
+        # I decide to make the default usage mode as follows
+        # because 20-30 papers would render the duration of the audio
+        # file close to an hour. A reasonable choice would be to pick
+        # just one category from today. In principle you can pick
+        # mulitple categories from as many days as you like, making the length of
+        # your audio exceed the hubble time.
+        cat = sys.argv[1]
     except IndexError:
-        print("Usage: python brief.py nlastdays")
+        print("Usage: python brief.py cat")
         quit()
-    astroph(n, cats=['co'])
+    astroph(1, cats=[cat])
