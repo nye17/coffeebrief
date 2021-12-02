@@ -3,7 +3,7 @@
 import arxivscraper
 import pandas as pd
 from gtts import gTTS
-import os
+import os, sys
 import datetime
 import requests
 requests.packages.urllib3.disable_warnings()
@@ -14,7 +14,7 @@ requests.packages.urllib3.disable_warnings()
 """ Scrape arXiv for astro-ph papers that were submitted within the past N days.
 """
 
-def astroph(nlastdays=1, txtout='astroph.txt', mp3out='astroph.mp3', cats=['ga', 'co', 'sr', 'ep']):
+def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_audio.mp3', cats=['ga', 'co', 'sr', 'ep']):
     """
     nlastdays: integer (optional)
         How many days since the last date did you listen to the coffee brief? Shame! Shame! Shame! (default: 1)
@@ -49,6 +49,8 @@ def astroph(nlastdays=1, txtout='astroph.txt', mp3out='astroph.mp3', cats=['ga',
         if adopted:
             mytext = 'Title: ' + row.title + '.\n Submitted by ' + row.authors[0] + ' et al.\n ' + row.abstract + '\n\n'
             text += mytext
+        if npaper >= 1:
+            break
     print(npaper)
     if txtout:
         print("exporting script to txt file")
@@ -58,13 +60,13 @@ def astroph(nlastdays=1, txtout='astroph.txt', mp3out='astroph.mp3', cats=['ga',
         print("exporting audio to mp3 file")
         myobj = gTTS(text=text, lang=language, slow=False)
         myobj.save(mp3out)
+        # os.system("afplay astroph.mp3")
+    return()
 
 if __name__ == "__main__":
     try:
         n = int(sys.argv[1])
-        mp3out = sys.argv[2]
     except IndexError:
-        print("python brief.py 1 mp3out")
+        print("Usage: python brief.py nlastdays")
         quit()
-    astroph(1, txtout=False, mp3out=mp3out, cats=['co'])
-    # os.system("afplay astroph.mp3")
+    astroph(n, cats=['co'])
