@@ -50,7 +50,11 @@ def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_au
     for row in new.itertuples(index=False):
         adopted = False
         shelter = row.categories.split(" ")
-        for cat in shelter:
+        # if the cat were in the shelter
+        # for cat in shelter:
+        # if the cat were the king/queen of the shelter
+        if len(shelter)>0:
+            cat = shelter[0] #primary category
             if cat[9:] in cats:
                 adopted = True
                 npaper += 1
@@ -75,15 +79,17 @@ def astroph(nlastdays=1, txtout='coffeebrief_script.txt', mp3out='coffeebrief_au
     return()
 
 if __name__ == "__main__":
-    try:
-        # I decide to make the default usage mode as follows
-        # because 20-30 papers would render the duration of the audio
-        # file close to an hour. A reasonable choice would be to pick
-        # just one category from today. In principle you can pick
-        # mulitple categories from as many days as you like, making the length of
-        # your audio exceed the hubble time.
-        cat = sys.argv[1]
-    except IndexError:
-        print("Usage: python brief.py cat")
-        quit()
-    astroph(1, cats=[cat])
+    # 20-30 papers would render the duration of the audio
+    # file close to an hour. A reasonable choice would be to pick
+    # just two categories from a single day. In principle you can pick
+    # mulitple categories from as many days as you like, making the length of
+    # your audio approach the hubble time.
+    #
+    # pick two from the list: 'ga', 'co', 'ep', 'he', 'im', 'sr'
+    # ga: Astrophysics of Galaxies;
+    # co: Cosmology and Nongalactic Astrophysics;
+    # ep: Earth and Planetary Astrophysics;
+    # he: High Energy Astrophysical Phenomena;
+    # im: Instrumentation and Methods for Astrophysics;
+    # sr: Solar and Stellar Astrophysics
+    astroph(1, cats=['co', 'ga'])
